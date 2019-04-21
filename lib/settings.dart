@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_demo/const.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,6 +33,7 @@ class SettingsScreen extends StatefulWidget {
 class SettingsScreenState extends State<SettingsScreen> {
   TextEditingController controllerNickname;
   TextEditingController controllerAboutMe;
+  TextEditingController controllerBusiness;
 
   SharedPreferences prefs;
 
@@ -41,12 +41,14 @@ class SettingsScreenState extends State<SettingsScreen> {
   String nickname = '';
   String aboutMe = '';
   String photoUrl = '';
+  String businessName= '';
 
   bool isLoading = false;
   File avatarImageFile;
 
   final FocusNode focusNodeNickname = new FocusNode();
   final FocusNode focusNodeAboutMe = new FocusNode();
+  final FocusNode focusNodeBusiness = new FocusNode();
 
   @override
   void initState() {
@@ -59,6 +61,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     id = prefs.getString('id') ?? '';
     nickname = prefs.getString('nickname') ?? '';
     aboutMe = prefs.getString('aboutMe') ?? '';
+
     photoUrl = prefs.getString('photoUrl') ?? '';
 
     controllerNickname = new TextEditingController(text: nickname);
@@ -98,30 +101,30 @@ class SettingsScreenState extends State<SettingsScreen> {
             setState(() {
               isLoading = false;
             });
-            Fluttertoast.showToast(msg: "Upload success");
+            //Fluttertoast.showToast(msg: "Upload success");
           }).catchError((err) {
             setState(() {
               isLoading = false;
             });
-            Fluttertoast.showToast(msg: err.toString());
+            //Fluttertoast.showToast(msg: err.toString());
           });
         }, onError: (err) {
           setState(() {
             isLoading = false;
           });
-          Fluttertoast.showToast(msg: 'This file is not an image');
+         // Fluttertoast.showToast(msg: 'This file is not an image');
         });
       } else {
         setState(() {
           isLoading = false;
         });
-        Fluttertoast.showToast(msg: 'This file is not an image');
+       // Fluttertoast.showToast(msg: 'This file is not an image');
       }
     }, onError: (err) {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(msg: err.toString());
+     // Fluttertoast.showToast(msg: err.toString());
     });
   }
 
@@ -136,22 +139,23 @@ class SettingsScreenState extends State<SettingsScreen> {
     Firestore.instance
         .collection('users')
         .document(id)
-        .updateData({'nickname': nickname, 'aboutMe': aboutMe, 'photoUrl': photoUrl}).then((data) async {
+        .updateData({'nickname': nickname, 'aboutMe': aboutMe, 'photoUrl': photoUrl,'businessName' : businessName}).then((data) async {
       await prefs.setString('nickname', nickname);
       await prefs.setString('aboutMe', aboutMe);
       await prefs.setString('photoUrl', photoUrl);
+      await prefs.setString('businessName', businessName);
 
       setState(() {
         isLoading = false;
       });
 
-      Fluttertoast.showToast(msg: "Update success");
+     // Fluttertoast.showToast(msg: "Update success");
     }).catchError((err) {
       setState(() {
         isLoading = false;
       });
 
-      Fluttertoast.showToast(msg: err.toString());
+     // Fluttertoast.showToast(msg: err.toString());
     });
   }
 
@@ -227,7 +231,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   // Username
                   Container(
                     child: Text(
-                      'Nickname',
+                      'Name',
                       style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: primaryColor),
                     ),
                     margin: EdgeInsets.only(left: 10.0, bottom: 5.0, top: 10.0),
@@ -279,6 +283,32 @@ class SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+
+              Container(
+                child: Text(
+                  'Business Name',
+                  style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: primaryColor),
+                ),
+                margin: EdgeInsets.only(left: 10.0, top: 30.0, bottom: 5.0),
+              ),
+              Container(
+                child: Theme(
+                  data: Theme.of(context).copyWith(primaryColor: primaryColor),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Fun, like travel and play PES...',
+                      contentPadding: EdgeInsets.all(5.0),
+                      hintStyle: TextStyle(color: greyColor),
+                    ),
+                    controller: controllerBusiness,
+                    onChanged: (value) {
+                      businessName = value;
+                    },
+                    focusNode: focusNodeBusiness,
+                  ),
+                ),
+                margin: EdgeInsets.only(left: 30.0, right: 30.0),
               ),
 
               // Button

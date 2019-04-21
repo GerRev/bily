@@ -5,16 +5,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
-  firebase_auth: 0.7.0
-  google_sign_in: 3.2.4
-  cloud_firestore: 0.8.2+3
-  fluttertoast: ^2.0.7
-  image_picker: 0.4.12+1
-  shared_preferences: 0.4.3
-  firebase_storage: 1.0.4
-  cached_network_image: ^0.7.0
-  intl: ^0.15.7
+  cupertino_icons: 0.1.2
+  firebase_auth: 0.8.3
+  google_sign_in: 4.0.1+1
+  cloud_firestore: 0.9.7
+  image_picker: 0.5.0+9
+  shared_preferences: 0.5.1+2
+  firebase_storage: 2.1.0+1
+  cached_network_image: 0.7.0
+  intl: 0.15.8
+  country_pickers: ^1.0.2
+  firebase_database: ^2.0.3
+  fluttertoast: ^3.0.3
 
 dev_dependencies:
   flutter_test:
@@ -24,7 +26,8 @@ flutter:
   uses-material-design: true
 
   assets:
-     - images/img_not_available.jpeg
+     - images/signin.png
+     - images/signin.jpeg
      - images/mimi1.gif
      - images/mimi2.gif
      - images/mimi3.gif
@@ -34,3 +37,9 @@ flutter:
      - images/mimi7.gif
      - images/mimi8.gif
      - images/mimi9.gif
+
+  fonts:
+    - family: MyFlutterApp
+      fonts:
+        - asset: fonts/MyFlutterApp.ttf
+

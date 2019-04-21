@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_demo/const.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -134,7 +133,7 @@ class ChatScreenState extends State<ChatScreen> {
       setState(() {
         isLoading = false;
       });
-      Fluttertoast.showToast(msg: 'This file is not an image');
+     // Fluttertoast.showToast(msg: 'This file is not an image');
     });
   }
 
@@ -163,7 +162,7 @@ class ChatScreenState extends State<ChatScreen> {
       });
       listScrollController.animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     } else {
-      Fluttertoast.showToast(msg: 'Nothing to send');
+      //Fluttertoast.showToast(msg: 'Nothing to send');
     }
   }
 
@@ -205,7 +204,7 @@ class ChatScreenState extends State<ChatScreen> {
                               ),
                           errorWidget: (context, url, error) => Material(
                                 child: Image.asset(
-                                  'images/img_not_available.jpeg',
+                                  'images/signin.png',
                                   width: 200.0,
                                   height: 200.0,
                                   fit: BoxFit.cover,
@@ -299,7 +298,7 @@ class ChatScreenState extends State<ChatScreen> {
                                     ),
                                 errorWidget: (context, url, error) => Material(
                                       child: Image.asset(
-                                        'images/img_not_available.jpeg',
+                                        'images/signin.png',
                                         width: 200.0,
                                         height: 200.0,
                                         fit: BoxFit.cover,

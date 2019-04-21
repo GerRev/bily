@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "347976604232",
-    "firebase_url": "https://flutterchatdemo.firebaseio.com",
-    "project_id": "flutterchatdemo",
-    "storage_bucket": "flutterchatdemo.appspot.com"
+    "project_number": "430046518150",
+    "firebase_url": "https://brandio-b473a.firebaseio.com",
+    "project_id": "brandio-b473a",
+    "storage_bucket": "brandio-b473a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:347976604232:android:5e864cb592d93aaa",
+        "mobilesdk_app_id": "1:430046518150:android:5e864cb592d93aaa",
         "android_client_info": {
           "package_name": "com.dfa.flutterchatdemo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "347976604232-k6p3475tsg23qhdgtdjqlb952udl5p9g.apps.googleusercontent.com",
+          "client_id": "430046518150-i9udo3hok70mgspgp159vle504cooasc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dfa.flutterchatdemo",
+            "certificate_hash": "ab8562aaf1a53eace1a11f5c20381ad6688609a0"
+          }
+        },
+        {
+          "client_id": "430046518150-fo3inth8rn68kdc9a8rn2qld2vgc550r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBoAoZZDb5Mzf8C8WUU6r9WHZvFWmusGN8"
+          "current_key": "AIzaSyBsy5bIddL2jiCxsTGT7p54AVBx_r7hZ9s"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430046518150-fo3inth8rn68kdc9a8rn2qld2vgc550r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
