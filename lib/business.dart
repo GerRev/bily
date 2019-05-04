@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_demo/service_type_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'auth_provider.dart';
 
 class Business extends StatefulWidget {
   @override
@@ -64,7 +65,10 @@ class _BusinessState extends State<Business> {
                           );
 
                       if(myController1.text==myController2.text){
-                        inputData();
+                       // inputData();
+                        var value= Text(myController1.text).data;
+                        onBusinessPressed(value);
+                        print("########################### Adding BusinessName  $value ");
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => PickServices()),
@@ -89,6 +93,19 @@ class _BusinessState extends State<Business> {
       ),
     );
   }
+
+
+
+  void onBusinessPressed(String value) {
+    var userData = AuthProvider.of(context).userData;
+
+    setState(() {
+      userData.businessName = value;
+
+      userData.syncDataUp();
+    });
+  }
+
 
   void inputData() async {
     final FirebaseUser user = await auth.currentUser();

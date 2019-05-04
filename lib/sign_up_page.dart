@@ -166,6 +166,7 @@ class SignUpFormState extends State<SignUpForm> {
                                     letterSpacing: 0.5,
                                     color: Colors.white)),
                            onPressed: validateAndSubmit,
+
                         ),
 
                         Padding(
@@ -186,6 +187,15 @@ class SignUpFormState extends State<SignUpForm> {
         ),
       );
 
+  }
+  void onPhonePressed(String value) {
+    var userData = AuthProvider.of(context).userData;
+
+    setState(() {
+      userData.name = value;
+
+      userData.syncDataUp();
+    });
   }
 }
 

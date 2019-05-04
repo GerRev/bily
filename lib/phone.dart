@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_demo/business.dart';
 import 'user_data.dart';
 import 'auth_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Phone extends StatefulWidget {
   @override
@@ -13,6 +14,8 @@ class Phone extends StatefulWidget {
 }
 
 class _PhoneState extends State<Phone> {
+
+  SharedPreferences prefs;
 
 
   final myController = TextEditingController();
@@ -25,7 +28,13 @@ class _PhoneState extends State<Phone> {
       userData.phoneNumber = value;
 
       userData.syncDataUp();
+
+
     });
+  }
+  void sp() async{
+   await prefs.setString('phoneNumber', AuthProvider.of(context).userData.name);
+
   }
   
 

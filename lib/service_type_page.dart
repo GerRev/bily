@@ -5,6 +5,7 @@ import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'user_data.dart';
 import 'homepage.dart';
+import 'auth_provider.dart';
 
 class PickServices extends StatefulWidget {
   @override
@@ -13,18 +14,30 @@ class PickServices extends StatefulWidget {
 
 class _PickServicesState extends State<PickServices> {
 
-  SharedPreferences prefs;
+ /* SharedPreferences prefs;
 
   Future<Null> handleSignIn() async {
     prefs = await SharedPreferences.getInstance();
-  }
+  }*/
 
   bool visible= false;
 
 
+
+  void onServicePressed(String value) {
+    var userData = AuthProvider.of(context).userData;
+
+    setState(() {
+      userData.services.add(value);
+
+      userData.syncDataUp();
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    handleSignIn();
+    //handleSignIn();
     return Scaffold(
       body: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -365,6 +378,9 @@ class _PickServicesState extends State<PickServices> {
                               padding: EdgeInsets.all(0),
                               onPressed: () {
                                 setState(() {
+                                  var value= Text('Activities').data;
+                                  print('££££££££££££££££££££££££ $value');
+                                  onServicePressed(value);
                                   visible=true;
 
                                 });
@@ -395,6 +411,7 @@ class _PickServicesState extends State<PickServices> {
                               padding: EdgeInsets.all(0),
                               onPressed: () {
                                 setState(() {
+
                                   visible=true;
 
 

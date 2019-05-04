@@ -19,6 +19,7 @@ class UserData {
   String businessName;
   String phoneNumber;
   AuthProvider provider;
+  String headerImage= 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMrtL6NLvgqXIZIEodtprN6ZJdBHQsAEhzrbUUHQRq3PT--9aG';
 
   void initData(FirebaseUser user, provider) {
     print('#####InitData: $user');
@@ -43,6 +44,9 @@ class UserData {
       "name": name,
       "shortName": shortName,
       "services": services,
+      "email": email,
+      'headerImage': headerImage,
+      "userId" : userId,
 
     };
 
@@ -85,12 +89,30 @@ class UserData {
 
       if(dataSnapshot.data.containsKey('name')) {
         name = dataSnapshot.data['name'];
-        shortName = name.split(' ')[0];
+       // shortName = name.split(' ')[0];
       }
 
       if(dataSnapshot.data.containsKey('email')) {
         email = dataSnapshot.data['email'];
       }
+      if(dataSnapshot.data.containsKey('phoneNumber')) {
+        phoneNumber = dataSnapshot.data['phoneNumber'];
+      }
+      if(dataSnapshot.data.containsKey('avatarUrl')) {
+        avatarUrl = dataSnapshot.data['avatarUrl'];
+      }
+
+      if(dataSnapshot.data.containsKey('userId')) {
+        userId = dataSnapshot.data['userId'];
+      }
+
+      if(dataSnapshot.data.containsKey('headerImage')) {
+        headerImage = dataSnapshot.data['headerImage'];
+      }
+
+
+
+
 
 
     } else {

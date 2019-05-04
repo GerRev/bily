@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:wellspingapp/auth_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class BaseAuth {
   Future<FirebaseUser> signInWithEmailAndPassword(String email, String password);
@@ -13,6 +14,7 @@ abstract class BaseAuth {
 }
 
 class Auth implements BaseAuth {
+  SharedPreferences prefs;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _gSignIn = new GoogleSignIn();
 
@@ -38,6 +40,7 @@ class Auth implements BaseAuth {
     );
     final FirebaseUser user = await _firebaseAuth.signInWithCredential(credential);
     print("signed in " + user.displayName);
+   // await prefs.setString('name', user.displayName);
     return user;
   }
 

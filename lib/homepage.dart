@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_demo/my_flutter_app_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'auth_provider.dart';
+import 'package:flutter_chat_demo/account_page.dart';
+import 'settings.dart';
+import 'my_page.dart';
+import 'package:flutter_chat_demo/tabs.dart';
 
 class BottomNavigationBarRecipe extends StatefulWidget {
   final String title;
@@ -241,11 +245,17 @@ class _BottomNavigationBarRecipeState extends State<BottomNavigationBarRecipe> {
             ),
             title: const Text('Inbox'),
           ),
-          const ListTile(
-            //Add menu item to add a new item
-            leading:
-                const Icon(Icons.account_box, color: Colors.green, size: 26),
-            title: const Text('My Page'),
+          FlatButton(
+            padding: EdgeInsets.all(0),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Tabs()));
+            },
+            child: const ListTile(
+              //Add menu item to add a new item
+              leading:
+                  const Icon(Icons.account_box, color: Colors.green, size: 26),
+              title: const Text('My Page'),
+            ),
           ),
           const ListTile(
             //Add menu item to add a new item
@@ -257,10 +267,18 @@ class _BottomNavigationBarRecipeState extends State<BottomNavigationBarRecipe> {
             leading: const Icon(Icons.calendar_today, color: Colors.blue, size: 26),
             title: const Text('Calendar'),
           ),
-          const ListTile(
-            //Add menu item to add a new item
-            leading: const Icon(Icons.trending_up, color: Colors.purple, size: 26),
-            title: const Text('Bookings'),
+          FlatButton(
+              padding: EdgeInsets.all(0),
+              onPressed: (){
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+
+            },
+            child: const ListTile(
+              //Add menu item to add a new item
+              leading: const Icon(Icons.settings, color: Colors.grey, size: 26),
+              title: const Text('Settings'),
+            ),
           ),
 
         ],

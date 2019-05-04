@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
 import 'user_data.dart';
-
+import 'package:flutter_chat_demo/events.dart';
 
 class AppStateContainer extends StatefulWidget {
   final BaseAuth auth;
@@ -14,6 +14,7 @@ class AppStateContainer extends StatefulWidget {
     @required this.child,
     this.auth,
     this.userData,
+
   });
 
   @override
