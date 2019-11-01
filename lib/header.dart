@@ -43,7 +43,8 @@ class _HeaderState extends State<Header> {
         isLoading = false;
       });
 
-      Fluttertoast.showToast(msg: "Update success");
+      Fluttertoast.showToast(msg: "Update success",backgroundColor: Theme.of(context).primaryColorDark,
+          textColor: Colors.white,fontSize: 14);
     }).catchError((err) {
       setState(() {
         isLoading = false;
@@ -58,6 +59,11 @@ class _HeaderState extends State<Header> {
     headerImage = 'https://imgplaceholder.com/640x360';
 
 
+  }
+  @override
+  void didChangeDependencies() {
+    identifier = AuthProvider.of(context).userData.userId;
+    super.didChangeDependencies();
   }
 
   Future getImage() async {
@@ -76,7 +82,7 @@ class _HeaderState extends State<Header> {
   Future uploadFile() async {
     // String fileName = id;
     StorageReference reference =
-    FirebaseStorage.instance.ref().child('headerImage');
+    FirebaseStorage.instance.ref().child(identifier);
     StorageUploadTask uploadTask = reference.putFile(_image);
     print('WWWWWWWWWWWWWWWQWWWWWWWWWWQWWWWWWW +$_image');
     StorageTaskSnapshot storageTaskSnapshot;
@@ -100,7 +106,8 @@ class _HeaderState extends State<Header> {
             setState(() {
               isLoading = false;
             });
-            Fluttertoast.showToast(msg: "Header Image Updated");
+            Fluttertoast.showToast(msg: "Header Image Updated",backgroundColor: Theme.of(context).primaryColorDark,
+                textColor: Colors.white,fontSize: 14);
           }).catchError((err) {
             setState(() {
               isLoading = false;

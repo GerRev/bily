@@ -14,7 +14,7 @@ class CustomCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left:20,right:20,top:20),
       child: Card(
-        elevation: 4,
+        elevation: 14,
           child: Container(
             padding: EdgeInsets.all(10),
               color: Colors.white,
@@ -40,8 +40,8 @@ class CustomCard extends StatelessWidget {
                        child: Column(
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
-                           Text("Event Type",style: TextStyle(color: Colors.grey),),
-                           Text(event)
+                           Text("Event Type",style: Theme.of(context).textTheme.subhead,),
+                           Text(event,style: Theme.of(context).textTheme.subtitle,)
                          ],
                        ),
                      )
@@ -56,8 +56,8 @@ class CustomCard extends StatelessWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children:[
-                              Text("Event Date",style: TextStyle(color: Colors.grey),),
-                              Text(DateFormat('yyyy-MM-dd').format(date))]),
+                              Text("Event Date",style: Theme.of(context).textTheme.subhead,),
+                              Text(DateFormat('yyyy-MM-dd').format(date),style: Theme.of(context).textTheme.subtitle,)]),
                       )
                     ]),
 
@@ -68,8 +68,8 @@ class CustomCard extends StatelessWidget {
                        child: Column(
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
-                           Text('Location',style: TextStyle(color: Colors.grey),),
-                           Text(location),
+                           Text('Location',style: Theme.of(context).textTheme.subhead,),
+                           Text(location,style: Theme.of(context).textTheme.subtitle,),
                          ],
                        ),
                      )
@@ -80,13 +80,13 @@ class CustomCard extends StatelessWidget {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                      Text('Service',style: TextStyle(color: Colors.grey),),
-                      Text(service)]),
+                      Text('Service',style: Theme.of(context).textTheme.subhead,),
+                      Text(service,style: Theme.of(context).textTheme.subtitle,)]),
                         )]),
                   ],
 
                 ),
-                  Icon(Icons.delete,color: Colors.red[200],),
+
               ]))),
     );
   }

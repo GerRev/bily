@@ -69,44 +69,46 @@ class SignInFormState extends State<SignInForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 100),
-              child: Container(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColor, //change your color here
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Hero(
+              tag: 'logo',
+              child: Image.asset(
+                'images/logo.png',
+                //width: 10,
+                color: Theme.of(context).primaryColor,
+                //height: 100,
+              )),
+        ),
+        body: Form(
+          key: _formKey,
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 100),
+                  child: Container(
 //                height: MediaQuery.of(context).size.height - 180,
-                  padding:
-                  EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
-                  child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TextFormField(
-                          key: Key('email'),
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: new InputDecoration(
-                            hintText: 'Email',
-                            labelStyle: TextStyle(
-                                color: const Color(0xFF424242)
-                            )
-                          ),
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Color.fromRGBO(170, 170, 170, 1)),
-                          validator: EmailFieldValidator.validate,
-                          onSaved: (value) => _email = value,
-                        ),
-                        SizedBox(height: 20),
-
+                      padding:
+                      EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
+                      child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
                             TextFormField(
-                              key: Key('password'),
+                              key: Key('email'),
+                              keyboardType: TextInputType.emailAddress,
                               decoration: new InputDecoration(
-                             //   hintText: 'Password',fillColor: Colors.red,
+                                hintText: 'Email',
                                 labelStyle: TextStyle(
                                     color: const Color(0xFF424242)
                                 )
@@ -114,41 +116,58 @@ class SignInFormState extends State<SignInForm> {
                               style: TextStyle(
                                   fontSize: 16,
                                   color: Color.fromRGBO(170, 170, 170, 1)),
-                              obscureText: true,
-                              validator: PasswordFieldValidator.validate,
-                              onSaved: (value) => _password = value,
+                              validator: EmailFieldValidator.validate,
+                              onSaved: (value) => _email = value,
                             ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            InkWell(
-                              child: Text('SIGN IN',
-                                  style:
-                                  TextStyle(fontSize: 16, color:Color(0xff7D9EE9),fontWeight: FontWeight.bold )),
-                              onTap: validateAndSubmit,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 2,),
+                            SizedBox(height: 20),
 
-
-                        Padding(
-                          padding: const EdgeInsets.only(top:60),
-                          child: FlatButton(
-                              child: Text('RECOVER PASSWORD',
+                                TextFormField(
+                                  key: Key('password'),
+                                  decoration: new InputDecoration(
+                                    hintText: 'Password',fillColor: Colors.red,
+                                    labelStyle: TextStyle(
+                                        color: const Color(0xFF424242)
+                                    )
+                                  ),
                                   style: TextStyle(
-                                      color:Colors.grey, fontSize: 14,fontWeight: FontWeight.bold)),
-                              onPressed: () {
-                                Navigator.push(context, RecoverPassPage());
-                              }),
-                        ),
-                        Center(child: Text(data,style: TextStyle(fontSize: 16, color:Color(0xff7D9EE9),fontWeight: FontWeight.bold ))),
-                      ])),
-            )
-          ],
+                                      fontSize: 16,
+                                      color: Color.fromRGBO(170, 170, 170, 1)),
+                                  obscureText: true,
+                                  validator: PasswordFieldValidator.validate,
+                                  onSaved: (value) => _password = value,
+                                ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                InkWell(
+                                  child: Text('SIGN IN',style: Theme.of(context).textTheme.subhead,
+
+                                      ),
+                                  onTap: validateAndSubmit,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 2,),
+
+
+                            Padding(
+                              padding: const EdgeInsets.only(top:60),
+                              child: FlatButton(
+                                  child: Text('RECOVER PASSWORD',
+                                      style: Theme.of(context).textTheme.subtitle),
+                                  onPressed: () {
+                                    Navigator.push(context, RecoverPassPage());
+                                  }),
+                            ),
+                            Center(child: Text(data,style: TextStyle(fontSize: 16, color:Color(0xff7D9EE9),fontWeight: FontWeight.bold ))),
+                          ])),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

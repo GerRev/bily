@@ -16,13 +16,6 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(
-          'SETTINGS',
-          style: TextStyle(color: Theme.of(context).primaryColor),
-        ),
-        centerTitle: true,
-      ),
       body: new SettingsScreen(),
     );
   }
@@ -203,15 +196,6 @@ class SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Details'),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(
-          color: Theme.of(context).primaryColor, //change your color here
-        ),
-      ),
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
@@ -266,10 +250,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                   Column(
                     children: <Widget>[
                       // Username
-                      Text(
-                        'name',
-                        style: TextStyle(color: Colors.grey),
-                      ),
+
+
                       Theme(
                         data: Theme.of(context).copyWith(primaryColor: primaryColor),
                         child: TextField(
@@ -334,15 +316,12 @@ class SettingsScreenState extends State<SettingsScreen> {
                   Container(
                     width:MediaQuery.of(context).size.width,
                       child: FlatButton(
-                        color: Color(0xff7D9EE9),
+                        color: Theme.of(context).primaryColor,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                             BorderRadius.all(Radius.circular(10))),
-                        child: new Text('Update',
-                            style: new TextStyle(
-                                fontSize: 16,
-                                letterSpacing: 0.5,
-                                color: Colors.white)),
+                        child: new Text('UPDATE',
+                            style: Theme.of(context).textTheme.button),
                         onPressed: handleUpdateData,
 
 
@@ -360,9 +339,9 @@ class SettingsScreenState extends State<SettingsScreen> {
                           width: 0.8,),
                           borderRadius:
                           BorderRadius.all(Radius.circular(10))),
-                      child: new Text('Log Out',
+                      child: new Text('LOGOUT',
                           style: new TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               letterSpacing: 0.5,
                               color: Theme.of(context).primaryColor)),
                       onPressed:() {_signOut(context);}

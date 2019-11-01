@@ -7,6 +7,7 @@ import 'package:flutter_chat_demo/business.dart';
 import 'user_data.dart';
 import 'auth_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Phone extends StatefulWidget {
   @override
@@ -15,10 +16,11 @@ class Phone extends StatefulWidget {
 
 class _PhoneState extends State<Phone> {
 
-  SharedPreferences prefs;
+
 
 
   final myController = TextEditingController();
+  bool visible= false;
 
 
   void onPhonePressed(String value) {
@@ -31,10 +33,6 @@ class _PhoneState extends State<Phone> {
 
 
     });
-  }
-  void sp() async{
-   await prefs.setString('phoneNumber', AuthProvider.of(context).userData.name);
-
   }
   
 
@@ -53,57 +51,89 @@ class _PhoneState extends State<Phone> {
   );
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top:100),
-            child: Column(
-                children:[ Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:[ CountryPickerDropdown(
-                      initialValue: 'ie',
-                      itemBuilder: _buildDropdownItem,
-                      onValuePicked: (Country country) {
-                        print("${country.name}");
-                      },
-                    ),
-                    Expanded(
-                      child: TextField(
-                        onChanged: (text) {
-                          print("First text field: $text");
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColor, //change your color here
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Hero(
+              tag: 'logo',
+              child: Image.asset(
+                'images/logo.png',
+                //width: 10,
+                color: Theme.of(context).primaryColor,
+                //height: 100,
+              )),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top:40),
+              child: Column(
+                  children:[ Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children:[ CountryPickerDropdown(
+                        initialValue: 'ie',
+                        itemBuilder: _buildDropdownItem,
+                        onValuePicked: (Country country) {
+                          print("${country.name}");
                         },
-
-                        controller: myController,
-                        decoration: new InputDecoration(labelText: "Enter your number"),
-                        keyboardType: TextInputType.number,
                       ),
-                    ),
-                    ]
-                ),
-                SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [Padding(
-                    padding: const EdgeInsets.only(top:32.0),
-                    child: InkWell(
+                      Expanded(
+                        child: TextField(
+                          onChanged: (text) {
+                            setState(() {
+                              visible=true;
+                            });
+                            print("First text field: $text");
+                          },
 
-                        child: Text('Next',style: TextStyle(color: Color(0xff7D9EE9),fontSize: 22),),
-                        onTap:(){
-                          var value= Text(myController.text).data;
-                          onPhonePressed(value);
-                          print("########################### Adding Phone number $value ");
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Business()),
-                          );
-                        }),
-
+                          controller: myController,
+                          decoration: new InputDecoration(labelText: "Enter your number"),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      ]
                   ),
-          ]
-                )
-                ]
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [Padding(
+                      padding: const EdgeInsets.only(top:32.0),
+                      child: Visibility(
+                        visible: visible,
+                        child: IconButton(
+
+                            icon: Icon(Icons.arrow_forward,size: 32,),
+                            onPressed:(){
+                              String value= Text(myController.text).data;
+                              if(value==null || value==''){
+                                Fluttertoast.showToast(
+                                    msg: 'You need to enter a number ',
+                                    backgroundColor: Theme.of(context).primaryColor);
+
+                              }
+
+                              else {
+                              onPhonePressed(value);
+                              print("########################### Adding Phone number $value ");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Business()),
+                              );
+                            }}),
+                      ),
+
+                    ),
+            ]
+                  )
+                  ]
+              ),
             ),
           ),
         ),

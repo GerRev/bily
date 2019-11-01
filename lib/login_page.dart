@@ -114,85 +114,93 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
 
     return
-      Scaffold(
-       // backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-            children:
-            [
-              Opacity(
-                opacity: _showProgressIndicator ? 1 : 0,
-                child: CircularProgressIndicator()
-            ),Container(
-              padding: EdgeInsets.only(left: 20,right: 20, top: MediaQuery.of(context).size.width-200),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-
-                  SizedBox(height: 20,),
-                  Container(
-                    child: RaisedButton(
-                        color: Color(0xffCC0000),
-                      padding: EdgeInsets.all(16),
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
-                      child: new Text('Sign in with Google',
-                          style: new TextStyle(
-                              fontSize: 16,
-                              letterSpacing: 0.5,
-                              color: Colors.white)),
-                      onPressed: loginWithGoogle,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-
-                  Container(
-                    child: RaisedButton(
-                      color: Color(0xff7D9EE9),
-                      padding: EdgeInsets.all(16),
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
-                      child: new Text('Sign up with Email',
-                          style: new TextStyle(
-                              fontSize: 16,
-                              letterSpacing: 0.5,
-                              color: Colors.white)),
-                      onPressed: (){
-                        Navigator.push(
-                            context, SignUpPage(widget.onSignedIn));
-                      }
-                    ),
-                  ),
-
-
-
-                  Padding(
-                    padding: const EdgeInsets.only(top:32.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FlatButton(
-                            child: new Text('SIGN IN',
-                              style: TextStyle(color: Color(0xff7D9EE9)),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context, SignInPage(widget.onSignedIn));
-                            },
-
-                          ),
-
-                        ]),
-                  ),
-                ],
-
+      SafeArea(
+        child: Scaffold(
+         // backgroundColor: Colors.transparent,
+          body: Stack(
+            //alignment: AlignmentDirectional.centerS,
+              children:
+              [
+                Center(
+                  child: Opacity(
+                    opacity: _showProgressIndicator ? 1 : 0,
+                    child: CircularProgressIndicator()
               ),
-            ),
-            ]
-        )
-        ,);
+                ),Padding(
+                padding: const EdgeInsets.only(top:80),
+                child: Column(
+                  children:[ Container(
+                    padding: EdgeInsets.only(left: 20,right: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+
+                        SizedBox(height:60),
+
+
+                        Hero(tag:'logo',child: Image.asset('images/logo.png',width: 10,color: Theme.of(context).primaryColor,height: 100,)),
+
+                        SizedBox(height: 100,),
+                        Container(
+                          child: RaisedButton(
+                              color: Color(0xffCC0000),
+                            padding: EdgeInsets.all(16),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                            child: new Text('SIGN IN WITH GOOGLE',
+                                style: Theme.of(context).textTheme.button),
+                            onPressed: loginWithGoogle,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+                        Container(
+                          child: RaisedButton(
+                            color: Theme.of(context).primaryColor,
+                            padding: EdgeInsets.all(16),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                            child: new Text('SIGN UP WITH EMAIL',
+                                style: Theme.of(context).textTheme.button),
+                            onPressed: (){
+                              Navigator.push(
+                                  context, SignUpPage(widget.onSignedIn));
+                            }
+                          ),
+                        ),
+
+
+
+                        Padding(
+                          padding: const EdgeInsets.only(top:32.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FlatButton(
+                                  child: new Text('SIGN IN',
+                                    style: Theme.of(context).textTheme.subtitle),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context, SignInPage(widget.onSignedIn));
+                                  },
+
+                                ),
+
+                              ]),
+                        ),
+                      ],
+
+                    ),
+                  ),
+                ]),
+              ),
+              ]
+          )
+          ,),
+      );
 
 
   }

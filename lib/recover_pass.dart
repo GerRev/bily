@@ -13,6 +13,15 @@ class EmailFieldValidator {
   }
 }
 
+
+
+
+
+
+
+
+
+
 class RecoverPassForm extends StatefulWidget {
   @override
   RecoverPassFormState createState() => RecoverPassFormState();
@@ -80,57 +89,45 @@ class RecoverPassFormState extends State<RecoverPassForm> {
         child: Stack(
           alignment: Alignment.topCenter,
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/signin.jpeg'),
-                  fit: BoxFit.cover,
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                iconTheme: IconThemeData(
+                  color: Theme.of(context).primaryColor, //change your color here
                 ),
-              ),
-              child: Scaffold(
+                elevation: 0,
                 backgroundColor: Colors.transparent,
-                appBar: AppBar(
-                  elevation: 0,
-                  centerTitle: true,
-                  title: Text("RECOVER PASSWORD"),
-                  backgroundColor: Colors.transparent,
-                ),
+                centerTitle: true,
+                title: Hero(
+                    tag: 'logo',
+                    child: Image.asset(
+                      'images/logo.png',
+                      //width: 10,
+                      color: Theme.of(context).primaryColor,
+                      //height: 100,
+                    )),
               ),
             ),
 
 
             Container(
 //                height: MediaQuery.of(context).size.height - 180,
-                padding: EdgeInsets.only(top: 130, left: 10, right: 10, bottom: 10),
+                padding: EdgeInsets.only(top: 130, left: 20, right: 20, bottom: 10),
                 child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
 
 
-                      Container(
-                        height: 60,
-                        padding: EdgeInsets.only(top: 8, left: 10, right: 10, bottom: 10),
-                        decoration: new BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          border: new Border.all(
-                            color: Color.fromRGBO(204, 204, 204, 1),
-                            width: 1.0,
-                          ),
+                      TextFormField(
+                        key: Key('email'),
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: new InputDecoration(
+                          hintText: 'EMAIL',
+                         // border: InputBorder.none,
                         ),
-                        child: TextFormField(
-                          key: Key('email'),
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: new InputDecoration(
-                            hintText: 'Email',
-                            border: InputBorder.none,
-                          ),
-                          style: TextStyle(fontSize: 16, color: Color.fromRGBO(170, 170, 170, 1)),
-                          validator: EmailFieldValidator.validate,
-                          onSaved: (value) => _email = value,
-                        ),
+                        validator: EmailFieldValidator.validate,
+                        onSaved: (value) => _email = value,
                       ),
 
                       SizedBox(
@@ -138,10 +135,11 @@ class RecoverPassFormState extends State<RecoverPassForm> {
                       ),
 
                       RaisedButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        shape: RoundedRectangleBorder(borderRadius:
+                        BorderRadius.all(Radius.circular(10))),
+                        padding: EdgeInsets.all(16),
                         color: Theme.of(context).primaryColor,
-                        child: Text('RECOVER PASSWORD', style: TextStyle(fontSize: 16, color: Colors.white)),
+                        child: Text('RECOVER PASSWORD', style: Theme.of(context).textTheme.button),
                         onPressed: validateAndSubmit,
 
                       ),

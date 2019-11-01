@@ -1,0 +1,96 @@
+Flutter crash report; please file at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter --suppress-analytics build aot --output-dir=build/aot --target-platform=ios --target=lib/main.dart --release --ios-arch=armv7,arm64
+
+## exception
+
+ProcessException: ProcessException: Process "xcrun" exited abnormally:
+fatal error: error in backend: IO failure on output stream: No space left on device
+  Command: xcrun cc -arch arm64 -miphoneos-version-min=8.0 -c build/aot/arm64/snapshot_assembly.S -o build/aot/arm64/snapshot_assembly.o
+
+```
+#0      runCheckedAsync (package:flutter_tools/src/base/process.dart:255:5)
+<asynchronous suspension>
+#1      Xcode.cc (package:flutter_tools/src/ios/mac.dart:231:12)
+#2      AOTSnapshotter._buildIosFramework (package:flutter_tools/src/base/build.dart:253:49)
+<asynchronous suspension>
+#3      AOTSnapshotter.build (package:flutter_tools/src/base/build.dart:225:38)
+<asynchronous suspension>
+#4      BuildAotCommand.runCommand.<anonymous closure> (package:flutter_tools/src/commands/build_aot.dart:112:44)
+#5      __InternalLinkedHashMap&_HashVMBase&MapMixin&_LinkedHashMapMixin.forEach (dart:collection-patch/compact_hash.dart:367:8)
+#6      BuildAotCommand.runCommand (package:flutter_tools/src/commands/build_aot.dart:111:19)
+#7      _asyncThenWrapperHelper.<anonymous closure> (dart:async-patch/async_patch.dart:77:64)
+#8      _rootRunUnary (dart:async/zone.dart:1132:38)
+#9      _CustomZone.runUnary (dart:async/zone.dart:1029:19)
+#10     _FutureListener.handleValue (dart:async/future_impl.dart:126:18)
+#11     Future._propagateToListeners.handleValueCallback (dart:async/future_impl.dart:639:45)
+#12     Future._propagateToListeners (dart:async/future_impl.dart:668:32)
+#13     Future._complete (dart:async/future_impl.dart:473:7)
+#14     _SyncCompleter.complete (dart:async/future_impl.dart:51:12)
+#15     _AsyncAwaitCompleter.complete (dart:async-patch/async_patch.dart:28:18)
+#16     _completeOnAsyncReturn (dart:async-patch/async_patch.dart:294:13)
+#17     AOTSnapshotter.compileKernel (package:flutter_tools/src/base/build.dart)
+#18     _asyncThenWrapperHelper.<anonymous closure> (dart:async-patch/async_patch.dart:77:64)
+#19     _rootRunUnary (dart:async/zone.dart:1132:38)
+#20     _CustomZone.runUnary (dart:async/zone.dart:1029:19)
+#21     _FutureListener.handleValue (dart:async/future_impl.dart:126:18)
+#22     Future._propagateToListeners.handleValueCallback (dart:async/future_impl.dart:639:45)
+#23     Future._propagateToListeners (dart:async/future_impl.dart:668:32)
+#24     Future._complete (dart:async/future_impl.dart:473:7)
+#25     _SyncCompleter.complete (dart:async/future_impl.dart:51:12)
+#26     _AsyncAwaitCompleter.complete (dart:async-patch/async_patch.dart:28:18)
+#27     _completeOnAsyncReturn (dart:async-patch/async_patch.dart:294:13)
+#28     _LocalFile&LocalFileSystemEntity&ForwardingFile.writeAsString (package:file/src/forwarding/forwarding_file.dart)
+#29     _asyncThenWrapperHelper.<anonymous closure> (dart:async-patch/async_patch.dart:77:64)
+#30     _rootRunUnary (dart:async/zone.dart:1132:38)
+#31     _CustomZone.runUnary (dart:async/zone.dart:1029:19)
+#32     _FutureListener.handleValue (dart:async/future_impl.dart:126:18)
+#33     Future._propagateToListeners.handleValueCallback (dart:async/future_impl.dart:639:45)
+#34     Future._propagateToListeners (dart:async/future_impl.dart:668:32)
+#35     Future._completeWithValue (dart:async/future_impl.dart:483:5)
+#36     Future._asyncComplete.<anonymous closure> (dart:async/future_impl.dart:513:7)
+#37     _rootRun (dart:async/zone.dart:1124:13)
+#38     _CustomZone.run (dart:async/zone.dart:1021:19)
+#39     _CustomZone.bindCallback.<anonymous closure> (dart:async/zone.dart:947:23)
+#40     _microtaskLoop (dart:async/schedule_microtask.dart:41:21)
+#41     _startMicrotaskLoop (dart:async/schedule_microtask.dart:50:5)
+#42     _runPendingImmediateCallback (dart:isolate-patch/isolate_patch.dart:115:13)
+#43     _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:172:5)
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel beta, v1.5.4-hotfix.2, on Mac OS X 10.14.2 18C54, locale en-IE)
+    • Flutter version 1.5.4-hotfix.2 at /Users/gerardhorgan/Downloads/flutter
+    • Framework revision 7a4c33425d (3 weeks ago), 2019-04-29 11:05:24 -0700
+    • Engine revision 52c7a1e849
+    • Dart version 2.3.0 (build 2.3.0-dev.0.5 a1668566e5)
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 28.0.3)
+    • Android SDK at /Users/gerardhorgan/Library/Android/sdk
+    • Android NDK location not configured (optional; useful for native profiling support)
+    • Platform android-28, build-tools 28.0.3
+    • Java binary at: /Applications/Android Studio.app/Contents/jre/jdk/Contents/Home/bin/java
+    • Java version OpenJDK Runtime Environment (build 1.8.0_152-release-1343-b01)
+    • All Android licenses accepted.
+
+[✓] iOS toolchain - develop for iOS devices (Xcode 10.1)
+    • Xcode at /Applications/Xcode.app/Contents/Developer
+    • Xcode 10.1, Build version 10B61
+    • ios-deploy 1.9.4
+    • CocoaPods version 1.6.0.beta.2
+
+[✓] Android Studio (version 3.4)
+    • Android Studio at /Applications/Android Studio.app/Contents
+    • Flutter plugin version 34.0.2
+    • Dart plugin version 183.5901
+    • Java version OpenJDK Runtime Environment (build 1.8.0_152-release-1343-b01)
+
+[✓] Connected device (1 available)
+    • iPhone X • D546029C-8839-48A9-8930-3099DE098A7D • ios • iOS 12.1 (simulator)
+
+• No issues found!
+```

@@ -6,11 +6,22 @@ import 'package:flutter_chat_demo/account_page.dart';
 import 'settings.dart';
 import 'my_page.dart';
 import 'package:flutter_chat_demo/tabs.dart';
+import 'add_card.dart';
+import 'calendar_tab.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'chat.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:intl/intl.dart';
 
 class BottomNavigationBarRecipe extends StatefulWidget {
   final String title;
+  final String currentUserId;
 
-  BottomNavigationBarRecipe({Key key, this.title}) : super(key: key);
+  BottomNavigationBarRecipe({Key key, this.title,@required this.currentUserId}) : super(key: key);
 
   @override
   _BottomNavigationBarRecipeState createState() =>
@@ -18,143 +29,191 @@ class BottomNavigationBarRecipe extends StatefulWidget {
 }
 
 class _BottomNavigationBarRecipeState extends State<BottomNavigationBarRecipe> {
+
+  FirebaseMessaging _messaging= FirebaseMessaging();
+  String currentUserId;
+  String token;
+
+
+  @override
+  void didChangeDependencies() {
+    currentUserId=AuthProvider.of(context).userData.userId;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Inbox",
-                  style: TextStyle(color: Colors.black, fontSize: 24),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Fluttertoast.showToast(
-                            msg: 'filters not implemented yet',
-                            textColor: Colors.white,
-                            backgroundColor: Colors.blue);
-                      },
-                      child: Icon(
-                        Icons.calendar_today,
-                        color: Colors.blue,
+    return SafeArea(
+      child: MaterialApp(
+        home: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Container(
+              padding: EdgeInsets.only(top: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Inbox",
+                    style: TextStyle(color: Colors.black, fontSize: 24),
+                  ),
+                  SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: 'filters not implemented yet',
+                              textColor: Colors.white,
+                              backgroundColor: Colors.blue);
+                        },
+                        child: Icon(
+                          Icons.calendar_today,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: 'filters not implemented yet',
+                              textColor: Colors.white,
+                              backgroundColor: Colors.blue);
+                        },
+                        child: Icon(
+                          Icons.event_available,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      InkWell(
+                        splashColor: Colors.pink,
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: 'filters not implemented yet',
+                              textColor: Colors.white,
+                              backgroundColor: Colors.blue);
+                        },
+                        child: Icon(
+                          Icons.calendar_today,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      InkWell(
+                        //highlightColor: Colors.yellow,
+                        splashColor: Colors.yellow,
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: 'filters not implemented yet',
+                              textColor: Colors.white,
+                              backgroundColor: Colors.blue);
+                        },
+                        child: Icon(
+                          Icons.file_download,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      InkWell(
+                        splashColor: Colors.orange,
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: 'filters not implemented yet',
+                              textColor: Colors.white,
+                              backgroundColor: Colors.white);
+                        },
+                        child: Icon(
+                          Icons.star,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 30),
+
+                  Text('Today'),
+                  SizedBox(
+                    height: 300,
+                    child: Container(
+                      child: StreamBuilder(
+                        stream: Firestore.instance.collection('customers').where("sender1", arrayContains: currentUserId).orderBy('timestamp',descending: true).snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData || snapshot.data.documents.isEmpty) {
+                            return Column(
+                              children: [Center(
+                                child: SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: FlareActor(
+                                    "images/bear.flr", animation:"fail",
+                                  ),
+                                ),
+                              ),
+                                SizedBox(height: 20,),
+                                FadeAnimatedTextKit(
+
+                                    text: [
+                                      "Inbox Empty"
+                                    ],
+                                    textStyle: TextStyle(fontSize: 22),
+
+                                    //textAlign: TextAlign.start,
+                                    alignment: AlignmentDirectional.topStart // or Alignment.topLeft
+                                ),
+                            ]);
+                          } else {
+                            return ListView.builder(
+                              padding: EdgeInsets.all(10.0),
+                              itemBuilder: (context, index) => buildItem(context, snapshot.data.documents[index]),
+                              itemCount: snapshot.data.documents.length,
+                            );
+                          }
+                        },
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        Fluttertoast.showToast(
-                            msg: 'filters not implemented yet',
-                            textColor: Colors.white,
-                            backgroundColor: Colors.blue);
-                      },
-                      child: Icon(
-                        Icons.event_available,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    InkWell(
-                      splashColor: Colors.pink,
-                      onTap: () {
-                        Fluttertoast.showToast(
-                            msg: 'filters not implemented yet',
-                            textColor: Colors.white,
-                            backgroundColor: Colors.blue);
-                      },
-                      child: Icon(
-                        Icons.calendar_today,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    InkWell(
-                      //highlightColor: Colors.yellow,
-                      splashColor: Colors.yellow,
-                      onTap: () {
-                        Fluttertoast.showToast(
-                            msg: 'filters not implemented yet',
-                            textColor: Colors.white,
-                            backgroundColor: Colors.blue);
-                      },
-                      child: Icon(
-                        Icons.file_download,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    InkWell(
-                      splashColor: Colors.orange,
-                      onTap: () {
-                        Fluttertoast.showToast(
-                            msg: 'filters not implemented yet',
-                            textColor: Colors.white,
-                            backgroundColor: Colors.blue);
-                      },
-                      child: Icon(
-                        Icons.star,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-                Text('Today'),
-                Center(
-                    child: Icon(
-                  Icons.landscape,
-                  size: 400,
-                  color: Colors.grey,
-                ))
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
+          bottomNavigationBar: BottomAppBar(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // Bottom that pops up from the bottom of the screen.
+              IconButton(
+                icon: Icon(
+                  Icons.menu,
+                ),
+                onPressed: () {
+                  showModalBottomSheet<Null>(
+                    context: context,
+                    builder: (BuildContext context) => openBottomDrawerDetails(),
+                  );
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.add_circle_outline,
+                ),
+                onPressed: () {
+                  showModalBottomSheet<Null>(
+                    context: context,
+                    builder: (BuildContext context) => openBottomDrawerBookings(),
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  Fluttertoast.showToast(
+                      msg: 'Clicked on Search menu action.',
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white);
+                },
+              ),
+            ],
+          )),
         ),
-        bottomNavigationBar: BottomAppBar(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            // Bottom that pops up from the bottom of the screen.
-            IconButton(
-              icon: Icon(
-                Icons.menu,
-              ),
-              onPressed: () {
-                showModalBottomSheet<Null>(
-                  context: context,
-                  builder: (BuildContext context) => openBottomDrawerDetails(),
-                );
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.add_circle_outline,
-              ),
-              onPressed: () {
-                showModalBottomSheet<Null>(
-                  context: context,
-                  builder: (BuildContext context) => openBottomDrawerBookings(),
-                );
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                Fluttertoast.showToast(
-                    msg: 'Clicked on Search menu action.',
-                    backgroundColor: Colors.blue,
-                    textColor: Colors.white);
-              },
-            ),
-          ],
-        )),
       ),
     );
   }
@@ -257,27 +316,30 @@ class _BottomNavigationBarRecipeState extends State<BottomNavigationBarRecipe> {
               title: const Text('My Page'),
             ),
           ),
-          const ListTile(
-            //Add menu item to add a new item
-            leading: const Icon(Icons.book, color: Colors.orange, size: 26),
-            title: const Text('Bookings'),
-          ),
-          const ListTile(
-            //Add menu item to add a new item
-            leading: const Icon(Icons.calendar_today, color: Colors.blue, size: 26),
-            title: const Text('Calendar'),
+
+          FlatButton(
+            padding: EdgeInsets.all(0),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarPage2()));
+
+            },
+            child: const ListTile(
+              //Add menu item to add a new item
+              leading: const Icon(Icons.calendar_today, color: Colors.blue, size: 26),
+              title: const Text('Calendar'),
+            ),
           ),
           FlatButton(
               padding: EdgeInsets.all(0),
               onPressed: (){
 
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingTabs()));
 
             },
             child: const ListTile(
               //Add menu item to add a new item
-              leading: const Icon(Icons.settings, color: Colors.grey, size: 26),
-              title: const Text('Settings'),
+              leading: const Icon(Icons.details, color: Colors.grey, size: 26),
+              title: const Text('Details'),
             ),
           ),
 
@@ -285,4 +347,131 @@ class _BottomNavigationBarRecipeState extends State<BottomNavigationBarRecipe> {
       ),
     );
   }
+
+  Widget buildItem(BuildContext context, DocumentSnapshot document) {
+    if (document['userId'] == currentUserId) {
+      print('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW $currentUserId');
+      return Container();
+    } else {
+      print('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW $currentUserId');
+      return GestureDetector(
+
+        onTap: () {
+
+
+
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Chat(
+                    peerId: document.documentID,
+                    peerAvatar: document['avatarUrl']
+                  )));
+        },
+
+        child: Container(
+          padding: EdgeInsets.all(0),
+          width: double.maxFinite,
+          height: 98,
+          child: Column(
+            children:[ Row(
+              children: <Widget>[
+                Material(
+                  child: CachedNetworkImage(
+                    
+                    placeholder: (context, url) => Container(
+                      padding: EdgeInsets.all(0),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.0,
+                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                      ),
+                      width: 50.0,
+                      height: 50.0,
+                    ),
+                    imageUrl: document['avatarUrl'],
+                    width: 50.0,
+                    height: 50.0,
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                  clipBehavior: Clip.hardEdge,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        '${document['name']}',
+                      style: TextStyle(fontWeight:FontWeight.bold,fontSize: 18),),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                    ),
+                    Container(
+                      child: Text(
+                        'About me: ${document['aboutMe'] ?? 'Not available'}',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                    ),
+                  ],
+                ),
+                Spacer(),
+
+                Text(
+                  DateFormat('dd MMM kk:mm')
+                      .format(DateTime.fromMillisecondsSinceEpoch(int.parse(document['timestamp']))),
+                  style: TextStyle(color: Theme.of(context).primaryColorDark, fontSize: 12.0, fontStyle: FontStyle.italic),
+                ),
+
+
+              ],
+
+            ),
+
+                ]
+          ),
+         // margin: EdgeInsets.only(bottom: 10.0,),
+        ),
+      );
+    }
+  }
+  void addToken(String registrationTokens) async{
+    var userData = AuthProvider.of(context).userData;
+
+
+      userData.registrationTokens = await registrationTokens;
+
+      userData.syncDataUp();
+
+
+  }
+
+  @override
+  void initState() {
+    onLaunch: (Map<String, dynamic> message) async {
+      print("££££££££££££££££££££££££onLaunch: $message");
+    };
+
+    _messaging.configure();
+
+    _messaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _messaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+
+    _messaging.getToken().then((registrationTokens){
+
+      addToken(registrationTokens);
+
+    });
+
+
+
+  }
+
+
 }

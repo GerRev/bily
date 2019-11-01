@@ -18,6 +18,7 @@ class Events {
   id = snapshot.documentID,
   event= snapshot['event'],
   date= snapshot['date'],
+
   service= snapshot['service'],
   location= snapshot['location'],
   bandId= snapshot['bandId'];

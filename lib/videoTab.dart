@@ -5,6 +5,9 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'auth_provider.dart';
 import 'video.dart';
+import 'auth_provider.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 class VideoTab extends StatefulWidget {
 
 
@@ -13,6 +16,7 @@ class VideoTab extends StatefulWidget {
 }
 
 class _VideoTabState extends State<VideoTab> {
+  String link;
   TextEditingController videosTitleInputController;
   TextEditingController videosDescripInputController;
   String identifier;
@@ -42,6 +46,35 @@ class _VideoTabState extends State<VideoTab> {
               stream: Firestore.instance.collection('Videos').where("bandId", isEqualTo: identifier).snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
+    if (!snapshot.hasData || snapshot.data.documents.isEmpty) {
+      return Column(
+          children:[ Center(
+            child: SizedBox(
+              height: 200,
+              width: 200,
+              child: FlareActor(
+
+                "images/bear.flr",
+                animation: "fail",
+
+              ),
+            ),
+          ),
+            SizedBox(height: 20,),
+            FadeAnimatedTextKit(
+
+                text: [
+                  "No Vidoes, Upload One"
+
+                ],
+                textStyle: TextStyle(fontSize: 22),
+
+                //textAlign: TextAlign.start,
+                alignment: AlignmentDirectional.topStart // or Alignment.topLeft
+            ),
+          ] );
+
+    }
 
                 if (snapshot.hasError)
                   return new Text('Error: ${snapshot.error}');
@@ -114,12 +147,16 @@ class _VideoTabState extends State<VideoTab> {
               child: Text('Add'),
               onPressed: () {
 
+
+
                 if(videosTitleInputController.text.isNotEmpty){
 
-                  setState(() {
-                    videosTitleInputController.text= YoutubePlayer.convertUrlToId(videosTitleInputController.text);
 
+                  setState(() {
+
+                    videosTitleInputController.text= YoutubePlayer.convertUrlToId(videosTitleInputController.text);
                   });
+                  
 
 
                   Firestore.instance.collection('Videos').add({'link':videosTitleInputController.text,

@@ -144,7 +144,7 @@ class _DateAndTimePickerDemoState extends State<DateAndTimePickerDemo> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Theme.of(context).primaryColor, //change your color here
+          color: Theme.of(context).primaryColorDark, //change your color here
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -218,15 +218,12 @@ class _DateAndTimePickerDemoState extends State<DateAndTimePickerDemo> {
                 child: Container(
                   width:MediaQuery.of(context).size.width,
                   child: FlatButton(
-                    color: Color(0xff7D9EE9),
+                    color: Theme.of(context).primaryColor,
                     shape: RoundedRectangleBorder(
                         borderRadius:
                         BorderRadius.all(Radius.circular(10))),
-                    child: new Text('Add Event',
-                        style: new TextStyle(
-                            fontSize: 16,
-                            letterSpacing: 0.5,
-                            color: Colors.white)),
+                    child: new Text('ADD EVENT',
+                        style: Theme.of(context).textTheme.button),
                     onPressed: (){
 
                       if(taskEventInputController.text.isNotEmpty && taskLocationInputController.text.isNotEmpty){
@@ -235,11 +232,12 @@ class _DateAndTimePickerDemoState extends State<DateAndTimePickerDemo> {
                         Firestore.instance.collection('Events').add({'event':taskEventInputController.text,'location':taskLocationInputController.text,
                         'bandId': AuthProvider.of(context).userData.userId, 'date': _fromDate,'service':_activity})
                             .then((result) =>{
-                        Fluttertoast.showToast(msg: "Event has been uploaded!",fontSize: 24),
+                        Fluttertoast.showToast(msg: "Event has been uploaded!",fontSize: 14,backgroundColor: Theme.of(context).primaryColorDark,textColor: Colors.white),
                               Navigator.pop(context),
                               taskLocationInputController.clear(),
                               taskEventInputController.clear(),
-                        }).catchError((err) => Fluttertoast.showToast(msg: "Update success"));
+
+                        }).catchError((err) => Fluttertoast.showToast(msg: 'Your event wasn''t uploaded :( $err'));
 
 
 

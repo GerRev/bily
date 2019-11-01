@@ -5,6 +5,8 @@ import 'package:flutter_chat_demo/service_type_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'auth_provider.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+
 
 class Business extends StatefulWidget {
   @override
@@ -15,79 +17,114 @@ class _BusinessState extends State<Business> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final myController1 = TextEditingController();
   final myController2 = TextEditingController();
-  SharedPreferences prefs;
+  bool visible= false;
+  //SharedPreferences prefs;
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(80.0),
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text('What is your business name?'),
-              Text(
-                "IMPOTANT",
-                style: TextStyle(fontWeight: FontWeight.bold),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Hero(
+              tag: 'logo',
+              child: Image.asset(
+                'images/logo.png',
+                //width: 10,
+                color: Theme.of(context).primaryColor,
+                //height: 100,
+              )),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 20,right: 20),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+              FadeAnimatedTextKit(
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                  text: [
+                    "This is important",
+                    "Your business name cannot be changed",
+                    "please enter the name twice"
+                  ],
+                  textStyle: TextStyle(fontSize: 26),
+
+                  //textAlign: TextAlign.start,
+                  alignment: AlignmentDirectional.topStart // or Alignment.topLeft
               ),
-              Text(
-                  'Be careful with the spelling as once your profile is created the business name cannot be changed'),
+                SizedBox(height: 60),
 
-              TextField(
-                decoration:
-                    new InputDecoration(labelText: "Enter your business name"),
-                controller: myController1,
 
-              ),
-              TextField(
-                decoration:
-                    new InputDecoration(labelText: "Repeat business name"),
-                controller: myController2,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top:30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [InkWell(
-                      child: Text(
-                        'NEXT',
-                  style: TextStyle(color: Color(0xff7D9EE9),fontSize: 22),),
-                      onTap:() {
-                        if(myController1.text.isEmpty)
-                          Fluttertoast.showToast(
-                              msg: "Business name can't be empty",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIos: 1,
-                              fontSize: 16.0
-                          );
+                TextField(
+                  decoration:
+                  new InputDecoration(labelText: "Enter your business name"),
+                  controller: myController1,
 
-                      if(myController1.text==myController2.text){
-                       // inputData();
-                        var value= Text(myController1.text).data;
-                        onBusinessPressed(value);
-                        print("########################### Adding BusinessName  $value ");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => PickServices()),
-                        );
-
-                      } else{
-                        Fluttertoast.showToast(
-                            msg: "Fields must be the same",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIos: 1,
-                            fontSize: 16.0
-                        );
-                      }
-                      }),
-          ]
                 ),
-              ),
-            ],
+                TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      visible=true;
+                    });
+                    print("First text field: $text");
+                  },
+                  decoration:
+                  new InputDecoration(labelText: "Repeat business name"),
+                  controller: myController2,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top:30.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [Visibility(
+                        visible: visible,
+
+                        child: IconButton(
+
+                            icon: Icon(
+                              Icons.arrow_forward,size: 32),
+                            onPressed:() {
+                              if(myController1.text.isEmpty)
+                                Fluttertoast.showToast(
+                                    msg: "Business name can't be empty",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIos: 1,
+                                    fontSize: 16.0
+                                );
+
+                              if(myController1.text==myController2.text){
+                                // inputData();
+                                var value= Text(myController1.text).data;
+                                onBusinessPressed(value);
+                                print("########################### Adding BusinessName  $value ");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => PickServices()),
+                                );
+
+                              } else{
+                                Fluttertoast.showToast(
+                                    msg: "Fields must be the same",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIos: 1,
+                                    fontSize: 16.0
+                                );
+                              }
+                            }),
+                      ),
+                      ]
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -107,18 +144,6 @@ class _BusinessState extends State<Business> {
   }
 
 
-  void inputData() async {
-    final FirebaseUser user = await auth.currentUser();
-    final uid = user.uid;
 
-    Firestore.instance
-        .collection('users')
-        .document(uid)
-        .updateData({'businessName': myController1.text});
-    final QuerySnapshot result =
-    await Firestore.instance.collection('users').where('id', isEqualTo: user.uid).getDocuments();
-    final List<DocumentSnapshot> documents = result.documents;
-    prefs.setString('businessName', documents[0]['businessName']);
-    // here you write the codes to input the data into firestore
-  }
 }
+

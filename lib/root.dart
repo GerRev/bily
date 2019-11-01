@@ -37,6 +37,7 @@ class _RootPageState extends State<RootPage> {
 
 
 
+
   Widget _buildWaitingScreen() {
     return Scaffold(
       body: Container(
@@ -55,6 +56,11 @@ class _RootPageState extends State<RootPage> {
           authStatus = AuthStatus.signedIn;
         });
   }
+  void _signedOut() {
+    setState(() {
+      authStatus = AuthStatus.notSignedIn;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,21 +70,19 @@ class _RootPageState extends State<RootPage> {
     switch (authStatus) {
       case AuthStatus.notDetermined:
         return _buildWaitingScreen();
-
       case AuthStatus.notSignedIn:
         return LoginPage(
           onSignedIn: _signedIn,
         );
       case AuthStatus.signedIn: {
         print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-        if(userData.services.length == 0) {
+        if(userData.services.isEmpty) {
+          print('Here I am!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
           print(userData.services.length);
           return Phone();
-
-
-        } else {
-          return
-            BottomNavigationBarRecipe();
+        }
+        else {
+          return BottomNavigationBarRecipe();
         }
 
       } break;
